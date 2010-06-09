@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Reading handwriting with an Applet and Deep Neural Networks</title>
+
+        <!-- Framework CSS -->
+        <link rel="stylesheet" href="blueprint/screen.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="blueprint/print.css" type="text/css" media="print">
+        <!--[if lt IE 8]><link rel="stylesheet" href="../../blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+
+
+        <!-- Import fancy-type plugin for the sample page. -->
+        <link rel="stylesheet" href="blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+        <style type="text/css">
+            body {
+                background-image: url("media/stripe.png");
+                font-family: helvetica;
+                padding-top: 3em;
+            }
+            h1 {
+                font-size: 4em;
+                color: #41425a;
+                line-height: 1.25em;
+            }
+            p {
+                font-size: 2em;
+            }
+            .container {
+                padding: 2em;
+                background-color: #FFF;
+                border-style: solid;
+                border-color: #787887;
+                border-width: 10px;
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="container">
+            <h1>Reading handwriting with an Applet and Deep Neural Networks</h1>
+            <hr>
+
+            <div class="span-24 last">
+                <center>
+                    <applet code="ocr.AppletLauncher"
+                            codebase="dist/"
+                            archive="ocr.jar"
+                            width="875" height="400">
+                        Your browser is completely ignoring the &lt;applet&gt; tag!
+                    </applet>
+                </center>
+            </div>
+            <div class="span-24 last">
+                <p></p>
+                <p style="margin: 1em;">Wait for the Applet to load and you will be able to draw a letter or digit using your mouse.
+                    This character will be recognized in real time by a Neural Network trained using Deep Learning. </p>
+                <p style="margin: 1em;">Deep Learning is a new area of Machine Learning research, which
+                    has been introduced with the objective of moving Machine Learning
+                    closer to one of its original goals: Artificial Intelligence.
+                    See these course notes for a <a href="http://www.iro.umontreal.ca/~pift6266/H10/notes/mlintro.html">brief introduction to Machine Learning for AI</a>
+                    and an <a href="http://www.iro.umontreal.ca/~pift6266/H10/notes/deepintro.html">introduction to Deep Learning algorithms</a>.</p>
+                <p style="margin: 1em;">Here's a video explaining this demo:</p>
+                <center><object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/3boKlkPBckA&hl=en_US&fs=1&rel=0&color1=0x2b405b&color2=0x6b8ab6"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/3boKlkPBckA&hl=en_US&fs=1&rel=0&color1=0x2b405b&color2=0x6b8ab6" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object></center>
+            </div>
+            <div class="span-24 last alt"  style="margin: 2em;">
+                <center>This page was brought to you by UdeM's <a href="http://www.iro.umontreal.ca/rubrique.php3?id_rubrique=27&lang=en">LISA Lab</a> to demonstrate Deep Learning.</center>
+            </div>
+        </div>
+
+    </body>
+</html>
