@@ -90,5 +90,24 @@ public class LogisticNetwork implements Serializable {
 
         return outputs;
     }
+
+    /**
+     * Get the output of the layer using the sigmoid activation function.
+     * @param inputs
+     * @return
+     */
+    public double[] getOutputSigmoid(double[] inputs) {
+        double[] outputs = new double[weights.length];
+
+        for (int j = 0; j < weights.length; j++) {
+            double sum = biases[j];
+            for (int i = 0; i < weights[0].length; i++) {
+                sum += inputs[i] * weights[j][i];
+            }
+            outputs[j] = 1.0 / (1.0 + Math.exp(-sum));
+        }
+
+        return outputs;
+    }
     
 }

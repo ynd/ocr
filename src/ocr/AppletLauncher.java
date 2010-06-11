@@ -21,10 +21,11 @@ public class AppletLauncher extends JApplet {
         OcrView view = new OcrView(app);
         view.getMenuBar().setVisible(false);
         setContentPane(view.getRootPane());
-        
+
         // Set background to same as windows controls.
         if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-            setBackground(SystemColor.window);
+            view.getComponent().setBackground(SystemColor.window);
+            view.getComponent().setBorder(new LineBorder(new Color(172, 172, 186), 1, true));
         } else {
             view.getComponent().setBackground(Color.WHITE);
         }
