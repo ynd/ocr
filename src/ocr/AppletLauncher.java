@@ -25,7 +25,6 @@ public class AppletLauncher extends JApplet {
         // Set background to same as windows controls.
         if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
             view.getComponent().setBackground(UIManager.getColor("Panel.background"));
-
         } else if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
             view.getComponent().setBackground(new Color(232, 232, 232));
         } else {
