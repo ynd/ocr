@@ -7,6 +7,7 @@ package ocr;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JApplet;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -20,13 +21,12 @@ public class AppletLauncher extends JApplet {
         OcrView view = new OcrView(app);
         view.getMenuBar().setVisible(false);
         setContentPane(view.getRootPane());
-
+        
         // Set background to same as windows controls.
-	if (System.getProperty("os.name").toLowerCase().indexOf( "win" ) >= 0) {
+        if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
             setBackground(SystemColor.window);
-        }
-        else {
-            setBackground(Color.WHITE);
+        } else {
+            view.getComponent().setBackground(Color.WHITE);
         }
     }
 }
