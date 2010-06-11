@@ -27,9 +27,8 @@ public class AppletLauncher extends JApplet {
             view.getComponent().setBackground(UIManager.getColor("Panel.background"));
         } else if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
             view.getComponent().setBackground(new Color(232, 232, 232));
-        } else {
-            view.getComponent().setBackground(Color.WHITE);
         }
+        
         view.getComponent().setBorder(new LineBorder(new Color(172, 172, 186), 1, true));
     }
 }
