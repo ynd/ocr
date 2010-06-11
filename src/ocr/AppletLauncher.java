@@ -5,8 +5,8 @@
 package ocr;
 
 import java.awt.Color;
-import java.awt.SystemColor;
 import javax.swing.JApplet;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 /**
@@ -22,12 +22,7 @@ public class AppletLauncher extends JApplet {
         view.getMenuBar().setVisible(false);
         setContentPane(view.getRootPane());
 
-        // Set background to same as windows controls.
-        if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-            view.getComponent().setBackground(SystemColor.window);
-            view.getComponent().setBorder(new LineBorder(new Color(172, 172, 186), 1, true));
-        } else {
-            view.getComponent().setBackground(Color.WHITE);
-        }
+        view.getComponent().setBackground(UIManager.getColor("Panel.background"));
+        view.getComponent().setBorder(new LineBorder(new Color(172, 172, 186), 1, true));
     }
 }
