@@ -25,5 +25,8 @@ public class AppletLauncher extends JApplet {
 	if (System.getProperty("os.name").toLowerCase().indexOf( "win" ) >= 0) {
             setBackground(SystemColor.window);
         }
+        else {
+            setBackground(Color.WHITE);
+        }
     }
 }

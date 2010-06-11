@@ -39,8 +39,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="resetTransformationButton" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jLabel12" alignment="0" pref="167" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel10" alignment="0" pref="167" max="32767" attributes="0"/>
                               <Component id="jLabel8" alignment="1" pref="167" max="32767" attributes="1"/>
                               <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
@@ -50,24 +49,25 @@
                               </Group>
                               <Component id="jLabel9" alignment="0" pref="167" max="32767" attributes="0"/>
                               <Component id="jLabel11" alignment="0" pref="167" max="32767" attributes="0"/>
+                              <Component id="jLabel12" pref="167" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="scratchingSlider" pref="282" max="32767" attributes="0"/>
-                              <Component id="polaritySlider" pref="282" max="32767" attributes="1"/>
+                              <Component id="scratchingSlider" pref="288" max="32767" attributes="0"/>
+                              <Component id="polaritySlider" pref="288" max="32767" attributes="1"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="xScaleSlider" min="-2" pref="141" max="-2" attributes="1"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="yScaleSlider" min="-2" pref="141" max="-2" attributes="1"/>
                               </Group>
-                              <Component id="rotationSlider" alignment="0" pref="282" max="32767" attributes="1"/>
+                              <Component id="rotationSlider" alignment="0" pref="288" max="32767" attributes="1"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="xTranslationSlider" min="-2" pref="141" max="-2" attributes="1"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="yTranslationSlider" min="-2" pref="141" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="saltSlider" alignment="0" pref="282" max="32767" attributes="1"/>
-                              <Component id="gaussianSlider" alignment="0" pref="282" max="32767" attributes="1"/>
+                              <Component id="saltSlider" alignment="0" pref="288" max="32767" attributes="1"/>
+                              <Component id="gaussianSlider" alignment="0" pref="288" max="32767" attributes="1"/>
                           </Group>
                       </Group>
                   </Group>
@@ -149,20 +149,25 @@
                                       <Component id="polaritySlider" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                                      <Component id="scratchingSlider" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                          <Component id="scratchingSlider" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace pref="46" max="32767" attributes="0"/>
+                                          <Component id="resetTransformationButton" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <EmptySpace pref="14" max="32767" attributes="0"/>
-                                  <Component id="resetTransformationButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jSeparator1" alignment="0" pref="408" max="32767" attributes="1"/>
+                              <Component id="jSeparator1" alignment="0" pref="415" max="32767" attributes="1"/>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -196,7 +201,7 @@
                                       <Component id="predLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jSeparator2" alignment="0" pref="401" max="32767" attributes="1"/>
+                              <Component id="jSeparator2" alignment="0" pref="416" max="32767" attributes="1"/>
                           </Group>
                       </Group>
                   </Group>
