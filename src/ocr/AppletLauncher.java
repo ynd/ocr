@@ -17,8 +17,9 @@ public class AppletLauncher extends JApplet {
 
     @Override
     public void init() {
-        OcrApp app = OcrApp.getInstance(OcrApp.class);
+        OcrApp app = OcrApp.getApplication();
         OcrView view = new OcrView(app);
+        view.getFrame().setVisible(false);
         view.getMenuBar().setVisible(false);
         setContentPane(view.getRootPane());
 
