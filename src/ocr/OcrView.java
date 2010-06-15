@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,9 @@ import org.jdesktop.application.FrameView;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Random;
@@ -50,17 +53,7 @@ public class OcrView extends FrameView {
 
         // Load serialized network with ObjectInputStream
         // Here's how the initial network was created:
-//        network = new LogisticNetwork[4];
-//        network[0] = new LogisticNetwork(32 * 32, 1000);
-//        network[1] = new LogisticNetwork(1000, 1000);
-//        network[2] = new LogisticNetwork(1000, 1000);
-//        network[3] = new LogisticNetwork(1000, 62);
-//
-//        // Load parameters of the model.
-//        network[0].loadParameters(getClass().getResourceAsStream("resources/params/layer0.save"));
-//        network[1].loadParameters(getClass().getResourceAsStream("resources/params/layer1.save"));
-//        network[2].loadParameters(getClass().getResourceAsStream("resources/params/layer2.save"));
-//        network[3].loadParameters(getClass().getResourceAsStream("resources/params/layer3.save"));
+//        loadNetworkFromScratch();
 
         BufferedInputStream bi = new BufferedInputStream(getClass().getResourceAsStream("resources/params/network.save.bz2"));
         try {
@@ -111,6 +104,37 @@ public class OcrView extends FrameView {
                 predBar2.setValue((int) (outputs[maximums[2]] * 100));
             }
         }, 0, 100);
+    }
+
+    /**
+     * Load network parameters from a text file on disk. This method will also
+     * serialize the resulting LogisticNetwork object to disk.
+     */
+    private void loadNetworkFromScratch() {
+        network = new LogisticNetwork[4];
+        network[0] = new LogisticNetwork(32 * 32, 1000);
+        network[1] = new LogisticNetwork(1000, 1000);
+        network[2] = new LogisticNetwork(1000, 1000);
+        network[3] = new LogisticNetwork(1000, 62);
+
+        // Load parameters of the model.
+        network[0].loadParameters(getClass().getResourceAsStream("resources/params/layer0.save"));
+        network[1].loadParameters(getClass().getResourceAsStream("resources/params/layer1.save"));
+        network[2].loadParameters(getClass().getResourceAsStream("resources/params/layer2.save"));
+        network[3].loadParameters(getClass().getResourceAsStream("resources/params/layer3.save"));
+
+        // Serialize network to disk
+        try {
+            FileOutputStream f_out = new FileOutputStream("network.save");
+
+            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+
+            obj_out.writeObject(network);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(OcrView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OcrView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -745,7 +769,7 @@ public class OcrView extends FrameView {
      */
     private void drawBackgroundImage() {
         Graphics2D g = backgroundImage.createGraphics();
-        
+
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, backgroundImage.getWidth(), backgroundImage.getHeight());
 
@@ -756,10 +780,10 @@ public class OcrView extends FrameView {
             Image backgroundPicture = resourceMap.getImageIcon("resultPanel.backgrounds[" + background + "]").getImage();
 
             g.drawImage(backgroundPicture, 0, 0,
-                        backgroundImage.getWidth(), backgroundImage.getHeight(),
-                        xx, yy,
-                        xx + backgroundImage.getWidth(), yy + backgroundImage.getHeight(),
-                        null);
+                    backgroundImage.getWidth(), backgroundImage.getHeight(),
+                    xx, yy,
+                    xx + backgroundImage.getWidth(), yy + backgroundImage.getHeight(),
+                    null);
         }
 
         for (int i = 0; i < (int) (0.999 + 10.0 * scratching / 100.); i++) {
