@@ -9,19 +9,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Random;
@@ -29,7 +21,7 @@ import java.util.TimerTask;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JSlider;
-import org.apache.tools.bzip2.CBZip2InputStream;
+import ocr.nnet.OcrNetwork;
 import org.jdesktop.application.ResourceMap;
 
 /**
@@ -42,42 +34,18 @@ public class OcrView extends FrameView {
 
         initComponents();
 
+        rng = new Random(Calendar.getInstance().getTimeInMillis());
         resultImage = new BufferedImage(32, 32, BufferedImage.TYPE_BYTE_GRAY);
         backgroundImage = new BufferedImage(32, 32, BufferedImage.TYPE_BYTE_GRAY);
         paths = new LinkedList<Pair<GeneralPath, Integer>>();
 
-        rng = new Random(Calendar.getInstance().getTimeInMillis());
-
-        // Create the layers of the network.
-
-
-        // Load serialized network with ObjectInputStream
-        // Here's how the initial network was created:
-//        loadNetworkFromScratch();
-
-        BufferedInputStream bi = new BufferedInputStream(getClass().getResourceAsStream("resources/params/network.save.bz2"));
-        try {
-            // Read bytes 'B' and 'Z'.
-            bi.read();
-            bi.read();
-
-            ObjectInputStream in = new ObjectInputStream(new CBZip2InputStream(bi));
-            network = (LogisticNetwork[]) in.readObject();
-            in.close();
-        } catch (IOException ex) {
-            Logger.getLogger(OcrView.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(OcrView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        network = OcrNetwork.loadObject();
         predictionTimer = new java.util.Timer();
         predictionTimer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-                double[] inputs = getNetworkInputLayer(resultImage);
-
-                double[] outputs = getNetworkOutputLayer(inputs);
+                double[] outputs = network.getOutput(resultImage);
 
                 // Display the 3 most probable categories.
                 int[] maximums = new int[3];
@@ -96,96 +64,16 @@ public class OcrView extends FrameView {
                     }
                 }
 
-                predLabel0.setText(categorytoLabel(maximums[0]));
+                predLabel0.setText(OcrNetwork.indexToLabel(maximums[0]));
                 predBar0.setValue((int) (outputs[maximums[0]] * 100));
-                predLabel1.setText(categorytoLabel(maximums[1]));
+                predLabel1.setText(OcrNetwork.indexToLabel(maximums[1]));
                 predBar1.setValue((int) (outputs[maximums[1]] * 100));
-                predLabel2.setText(categorytoLabel(maximums[2]));
+                predLabel2.setText(OcrNetwork.indexToLabel(maximums[2]));
                 predBar2.setValue((int) (outputs[maximums[2]] * 100));
             }
         }, 0, 100);
     }
-
-    /**
-     * Load network parameters from a text file on disk. This method will also
-     * serialize the resulting LogisticNetwork object to disk.
-     */
-    private void loadNetworkFromScratch() {
-        network = new LogisticNetwork[4];
-        network[0] = new LogisticNetwork(32 * 32, 1000);
-        network[1] = new LogisticNetwork(1000, 1000);
-        network[2] = new LogisticNetwork(1000, 1000);
-        network[3] = new LogisticNetwork(1000, 62);
-
-        // Load parameters of the model.
-        network[0].loadParameters(getClass().getResourceAsStream("resources/params/layer0.save"));
-        network[1].loadParameters(getClass().getResourceAsStream("resources/params/layer1.save"));
-        network[2].loadParameters(getClass().getResourceAsStream("resources/params/layer2.save"));
-        network[3].loadParameters(getClass().getResourceAsStream("resources/params/layer3.save"));
-
-        // Serialize network to disk
-        try {
-            FileOutputStream f_out = new FileOutputStream("network.save");
-
-            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
-
-            obj_out.writeObject(network);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(OcrView.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(OcrView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Get the network's input layer for the given image.
-     * @return
-     */
-    private double[] getNetworkInputLayer(BufferedImage image) {
-        double[] inputs = new double[image.getWidth() * image.getHeight()];
-
-        for (int j = 0; j < image.getHeight(); j++) {
-            for (int i = 0; i < image.getWidth(); i++) {
-                int pixel = image.getRGB(i, j);
-                int red = (pixel >> 16) & 0xff;
-                int green = (pixel >> 8) & 0xff;
-                int blue = (pixel) & 0xff;
-
-                inputs[j * image.getWidth() + i] = (red + green + blue) / (255.0 * 3.0);
-            }
-        }
-
-        return inputs;
-    }
-
-    /**
-     * Get output of the network for the given input.
-     * @return
-     */
-    private double[] getNetworkOutputLayer(double[] inputs) {
-        double[] output0 = network[0].getOutputTanh(inputs);
-        double[] output1 = network[1].getOutputTanh(output0);
-        double[] output2 = network[2].getOutputTanh(output1);
-        double[] output3 = network[3].getOutputSoftMax(output2);
-
-        return output3;
-    }
-
-    /**
-     * Convert an index of the output of the neural network to a character.
-     * @param category
-     * @return
-     */
-    private String categorytoLabel(int category) {
-        if (category <= 9) {
-            return String.valueOf(category);
-        } else if (category <= 35) {
-            return String.valueOf((char) (65 + (category - 10)));
-        } else {
-            return String.valueOf((char) (97 + (category - 36)));
-        }
-    }
-
+    
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -1053,7 +941,7 @@ public class OcrView extends FrameView {
     private javax.swing.JSlider yTranslationSlider;
     // End of variables declaration//GEN-END:variables
     private Random rng;
-    private LogisticNetwork[] network;
+    private OcrNetwork network;
     private final java.util.Timer predictionTimer;
     private Image inputImage;
     private BufferedImage resultImage;
