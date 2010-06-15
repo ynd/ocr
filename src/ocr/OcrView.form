@@ -23,7 +23,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -45,8 +45,8 @@
                           <Component id="resetTransformationButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jLabel13" alignment="0" pref="167" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel13" pref="167" max="32767" attributes="0"/>
                               <Component id="jLabel10" alignment="0" pref="167" max="32767" attributes="0"/>
                               <Component id="jLabel8" alignment="1" pref="167" max="32767" attributes="1"/>
                               <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
@@ -60,6 +60,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="backgroundSlider" min="-2" pref="288" max="-2" attributes="0"/>
                               <Component id="polaritySlider" alignment="0" pref="288" max="32767" attributes="1"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="xScaleSlider" min="-2" pref="141" max="-2" attributes="1"/>
@@ -75,7 +76,6 @@
                               <Component id="saltSlider" alignment="0" pref="288" max="32767" attributes="1"/>
                               <Component id="gaussianSlider" alignment="1" pref="288" max="32767" attributes="1"/>
                               <Component id="scratchingSlider" alignment="1" pref="288" max="32767" attributes="0"/>
-                              <Component id="backgroundSlider" alignment="0" min="-2" pref="288" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -161,9 +161,14 @@
                                       <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                       <Component id="scratchingSlider" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                                      <Component id="backgroundSlider" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="69" max="32767" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="resetTransformationButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="resampleButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -173,13 +178,9 @@
                           <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jSeparator1" alignment="0" pref="433" max="32767" attributes="1"/>
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="backgroundSlider" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="330" max="-2" attributes="0"/>
-                                      <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="369" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
