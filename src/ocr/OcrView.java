@@ -45,7 +45,12 @@ public class OcrView extends FrameView {
 
             @Override
             public void run() {
-                double[] outputs = network.getOutput(resultImage);
+                if (!isPredictionDirty) {
+                    return;
+                }
+                isPredictionDirty = false;
+
+                double[] outputs = network.getOutputRobust(resultImage);
 
                 // Display the 3 most probable categories.
                 int[] maximums = new int[3];
@@ -73,7 +78,7 @@ public class OcrView extends FrameView {
             }
         }, 0, 100);
     }
-    
+
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -651,6 +656,7 @@ public class OcrView extends FrameView {
         }
 
         resultPanel.repaint();
+        isPredictionDirty = true;
     }
 
     /**
@@ -958,5 +964,6 @@ public class OcrView extends FrameView {
     private int polarity = 100;
     private int scratching = 0;
     private int background = 0;
+    private boolean isPredictionDirty = true;
     private JDialog aboutBox;
 }

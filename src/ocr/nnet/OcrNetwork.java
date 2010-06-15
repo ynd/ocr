@@ -4,6 +4,7 @@
  */
 package ocr.nnet;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ocr.OcrApp;
@@ -109,6 +112,26 @@ public class OcrNetwork implements Serializable {
     }
 
     /**
+     * Deform the image slightly by means of translation, rotation and scaling.
+     * @param input image
+     * @param output image
+     * @param rng seeded random number generator
+     */
+    private void getDeformedImage(BufferedImage input,
+            BufferedImage output, Random rng) {
+        double xTranslation = (rng.nextInt(20) - 10) / 100. * output.getWidth();
+        double yTranslation = (rng.nextInt(20) - 10) / 100. * output.getHeight();
+        double rotation = Math.toRadians(rng.nextInt(20) - 10);
+        double xScale = (1 + (rng.nextInt(20) - 10) / 100.) * output.getWidth();
+        double yScale = (1 + (rng.nextInt(20) - 10) / 100.) * output.getHeight();
+
+        Graphics2D g = (Graphics2D) output.getGraphics();
+        g.translate(xTranslation, yTranslation);
+        g.rotate(rotation, output.getWidth() / 2, output.getHeight() / 2);
+        g.drawImage(input, 0, 0, (int) xScale, (int) yScale, null);
+    }
+
+    /**
      * Return the output of the network for the given image.
      * @param image
      * @return
@@ -122,6 +145,35 @@ public class OcrNetwork implements Serializable {
         double[] output3 = layers[3].getOutput(output2);
 
         return output3;
+    }
+
+    /**
+     * Return the output of the network for the given image. Get the mean
+     * prediction for multiple deformations of the input image.
+     * @param image
+     * @return
+     */
+    public double[] getOutputRobust(BufferedImage image) {
+        double[] outputs = getOutput(image);
+
+        final int count = 15;
+        Random rng = new Random(Calendar.getInstance().getTimeInMillis());
+        BufferedImage deformedImage = new BufferedImage(image.getWidth(),
+                image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+        for (int i = 0; i < (count - 1); i++) {
+            getDeformedImage(image, deformedImage, rng);
+
+            double[] deformedOutputs = getOutput(deformedImage);
+            for (int j = 0; j < deformedOutputs.length; j++) {
+                outputs[j] += deformedOutputs[j];
+            }
+        }
+
+        for (int i = 0; i < outputs.length; i++) {
+            outputs[i] /= count;
+        }
+
+        return outputs;
     }
 
     /**
