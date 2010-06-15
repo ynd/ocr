@@ -156,7 +156,7 @@ public class OcrNetwork implements Serializable {
     public double[] getOutputRobust(BufferedImage image) {
         double[] outputs = getOutput(image);
 
-        final int count = 15;
+        final int count = 10;
         Random rng = new Random(Calendar.getInstance().getTimeInMillis());
         BufferedImage deformedImage = new BufferedImage(image.getWidth(),
                 image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
