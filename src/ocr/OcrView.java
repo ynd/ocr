@@ -57,7 +57,7 @@ public class OcrView extends FrameView {
                 double[] outputs = network.getOutputRobust(resultImage);
                 totalTime += Calendar.getInstance().getTimeInMillis() - start;
                 totalCounts += 1;
-                jLabel1.setText((totalTime / (double) totalCounts) + "ms");
+                jLabel1.setText((int) (totalTime / (double) totalCounts) + "ms");
 
                 // Display the 3 most probable categories.
                 int[] maximums = new int[3];

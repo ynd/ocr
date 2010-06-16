@@ -129,10 +129,6 @@ public class OcrNetwork implements Serializable {
     public double[] getOutput(BufferedImage image) {
         double[] outputs = getInputLayer(image);
 
-//        for (int i = 0; i < layers.length; i++) {
-//            outputs = layers[i].getOutput(outputs);
-//        }
-
         for (NeuralNetworkLayer layer: layers) {
             outputs = layer.getOutput(outputs);
         }
@@ -149,7 +145,7 @@ public class OcrNetwork implements Serializable {
     public double[] getOutputRobust(BufferedImage image) {
         double[] outputs = getOutput(image);
 
-        final int count = 10;
+        final int count = 5;
         Random rng = new Random(Calendar.getInstance().getTimeInMillis());
         BufferedImage deformedImage = new BufferedImage(image.getWidth(),
                 image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);

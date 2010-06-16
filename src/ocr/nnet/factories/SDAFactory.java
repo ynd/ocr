@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import ocr.OcrApp;
 import ocr.nnet.NeuralNetworkLayer;
 import ocr.nnet.OcrNetwork;
-import ocr.nnet.SoftMaxActivation;
+import ocr.nnet.SigmoidActivation;
 import ocr.nnet.TanhActivation;
 
 /**
@@ -31,7 +31,7 @@ public class SDAFactory {
                     new NeuralNetworkLayer(32 * 32, 1000, new TanhActivation()),
                     new NeuralNetworkLayer(1000, 1000, new TanhActivation()),
                     new NeuralNetworkLayer(1000, 1000, new TanhActivation()),
-                    new NeuralNetworkLayer(1000, 62, new SoftMaxActivation())
+                    new NeuralNetworkLayer(1000, 62, new SigmoidActivation())
                 });
 
         return network;
@@ -41,12 +41,12 @@ public class SDAFactory {
      * Load the parameters of the network from predefined text files.
      */
     public static void loadParameters(OcrNetwork network) {
-        network.loadParameters(new InputStream[] {
-            OcrApp.class.getResourceAsStream("resources/params/layer0.save"),
-            OcrApp.class.getResourceAsStream("resources/params/layer1.save"),
-            OcrApp.class.getResourceAsStream("resources/params/layer2.save"),
-            OcrApp.class.getResourceAsStream("resources/params/layer3.save")
-        });
+        network.loadParameters(new InputStream[]{
+                    OcrApp.class.getResourceAsStream("resources/params/layer0.save"),
+                    OcrApp.class.getResourceAsStream("resources/params/layer1.save"),
+                    OcrApp.class.getResourceAsStream("resources/params/layer2.save"),
+                    OcrApp.class.getResourceAsStream("resources/params/layer3.save")
+                });
     }
 
     /**

@@ -15,7 +15,15 @@ public class SigmoidActivation implements Activation, Serializable {
 
     public void getOutput(double[] inputs) {
         for (int i = 0; i < inputs.length; i++) {
-            inputs[i] = 1.0 / (1.0 + Math.exp(-inputs[i]));
+            if (inputs[i] < -30.) {
+                inputs[i] = 0.;
+            }
+            else if (inputs[i] > 30.) {
+                inputs[i] = 1.;
+            }
+            else {
+                inputs[i] = 1.0 / (1.0 + Math.exp(-inputs[i]));
+            }            
         }
     }
 
