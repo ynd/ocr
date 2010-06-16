@@ -14,9 +14,9 @@ import java.util.Scanner;
  */
 public class NeuralNetworkLayer implements Serializable {
 
-    private float[] biases;
-    private float[][] weights;
-    private Activation activation;
+    private final float[] biases;
+    private final float[][] weights;
+    private final Activation activation;
 
     /**
      *

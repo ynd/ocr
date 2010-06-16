@@ -7,60 +7,50 @@ package ocr.nnet;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ocr.OcrApp;
 import org.apache.tools.bzip2.CBZip2InputStream;
 
 /**
- * The Neural Network used to do OCR.
+ * A Neural Network used to do OCR.
  * @author dauphiya
  */
 public class OcrNetwork implements Serializable {
 
-    private NeuralNetworkLayer[] layers;
+    private final NeuralNetworkLayer[] layers;
 
     /**
      * Create the Ocr Network with the predefined configuration.
      */
-    public OcrNetwork() {
-        layers = new NeuralNetworkLayer[4];
-        layers[0] = new NeuralNetworkLayer(32 * 32, 1000, new TanhActivation());
-        layers[1] = new NeuralNetworkLayer(1000, 1000, new TanhActivation());
-        layers[2] = new NeuralNetworkLayer(1000, 1000, new TanhActivation());
-        layers[3] = new NeuralNetworkLayer(1000, 62, new SoftMaxActivation());
+    public OcrNetwork(NeuralNetworkLayer[] layers) {
+        this.layers = layers;
     }
 
     /**
      * Load the parameters of the network from text files.
      */
-    public void loadParameters() {
-        layers[0].loadParameters(OcrApp.class.getResourceAsStream("resources/params/layer0.save"));
-        layers[1].loadParameters(OcrApp.class.getResourceAsStream("resources/params/layer1.save"));
-        layers[2].loadParameters(OcrApp.class.getResourceAsStream("resources/params/layer2.save"));
-        layers[3].loadParameters(OcrApp.class.getResourceAsStream("resources/params/layer3.save"));
+    public void loadParameters(InputStream[] streams) {
+        for (int i = 0; i < streams.length; i++) {
+            layers[i].loadParameters(streams[i]);
+        }
     }
 
     /**
      * Serialize the neural network to a file.
      */
-    public void saveObject() {
+    public void saveObject(OutputStream output) {
         try {
-            FileOutputStream f_out = new FileOutputStream("network.save");
-
-            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+            ObjectOutputStream obj_out = new ObjectOutputStream(output);
 
             obj_out.writeObject(this);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(OcrNetwork.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(OcrNetwork.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,9 +60,9 @@ public class OcrNetwork implements Serializable {
      * Deserialize neural network from a file.
      * @return deserialized network
      */
-    public static OcrNetwork loadObject() {
+    public static OcrNetwork loadObject(InputStream input) {
         OcrNetwork network = null;
-        BufferedInputStream bi = new BufferedInputStream(OcrApp.class.getResourceAsStream("resources/params/network.save.bz2"));
+        BufferedInputStream bi = new BufferedInputStream(input);
         try {
             // Read bytes 'B' and 'Z'.
             bi.read();
@@ -137,14 +127,17 @@ public class OcrNetwork implements Serializable {
      * @return
      */
     public double[] getOutput(BufferedImage image) {
-        double[] inputs = getInputLayer(image);
+        double[] outputs = getInputLayer(image);
 
-        double[] output0 = layers[0].getOutput(inputs);
-        double[] output1 = layers[1].getOutput(output0);
-        double[] output2 = layers[2].getOutput(output1);
-        double[] output3 = layers[3].getOutput(output2);
+//        for (int i = 0; i < layers.length; i++) {
+//            outputs = layers[i].getOutput(outputs);
+//        }
 
-        return output3;
+        for (NeuralNetworkLayer layer: layers) {
+            outputs = layer.getOutput(outputs);
+        }
+
+        return outputs;
     }
 
     /**

@@ -22,6 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JSlider;
 import ocr.nnet.OcrNetwork;
+import ocr.nnet.factories.SDAFactory;
 import org.jdesktop.application.ResourceMap;
 
 /**
@@ -29,6 +30,8 @@ import org.jdesktop.application.ResourceMap;
  */
 public class OcrView extends FrameView {
 
+    private long totalTime = 0;
+    private long totalCounts = 0;
     public OcrView(SingleFrameApplication app) {
         super(app);
 
@@ -39,7 +42,7 @@ public class OcrView extends FrameView {
         backgroundImage = new BufferedImage(32, 32, BufferedImage.TYPE_BYTE_GRAY);
         paths = new LinkedList<Pair<GeneralPath, Integer>>();
 
-        network = OcrNetwork.loadObject();
+        network = SDAFactory.load();
         predictionTimer = new java.util.Timer();
         predictionTimer.scheduleAtFixedRate(new TimerTask() {
 
@@ -50,7 +53,11 @@ public class OcrView extends FrameView {
                 }
                 isPredictionDirty = false;
 
+                long start = Calendar.getInstance().getTimeInMillis();
                 double[] outputs = network.getOutputRobust(resultImage);
+                totalTime += Calendar.getInstance().getTimeInMillis() - start;
+                totalCounts += 1;
+                jLabel1.setText((totalTime / (double) totalCounts) + "ms");
 
                 // Display the 3 most probable categories.
                 int[] maximums = new int[3];
