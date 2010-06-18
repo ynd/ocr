@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -30,8 +31,6 @@ import org.jdesktop.application.ResourceMap;
  */
 public class OcrView extends FrameView {
 
-    private long totalTime = 0;
-    private long totalCounts = 0;
     public OcrView(SingleFrameApplication app) {
         super(app);
 
@@ -53,11 +52,7 @@ public class OcrView extends FrameView {
                 }
                 isPredictionDirty = false;
 
-                long start = Calendar.getInstance().getTimeInMillis();
                 double[] outputs = network.getOutputRobust(resultImage);
-                totalTime += Calendar.getInstance().getTimeInMillis() - start;
-                totalCounts += 1;
-                jLabel1.setText((int) (totalTime / (double) totalCounts) + "ms");
 
                 // Display the 3 most probable categories.
                 int[] maximums = new int[3];
@@ -151,6 +146,9 @@ public class OcrView extends FrameView {
         resampleButton = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         backgroundSlider = new javax.swing.JSlider();
+        jLabel14 = new javax.swing.JLabel();
+        xSkewSlider = new javax.swing.JSlider();
+        ySkewSlider = new javax.swing.JSlider();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -416,6 +414,30 @@ public class OcrView extends FrameView {
             }
         });
 
+        jLabel14.setText(resourceMap.getString("jLabel14.text")); // NOI18N
+        jLabel14.setName("jLabel14"); // NOI18N
+        jLabel14.setPreferredSize(new java.awt.Dimension(70, 39));
+
+        xSkewSlider.setMaximum(25);
+        xSkewSlider.setMinimum(-25);
+        xSkewSlider.setValue(0);
+        xSkewSlider.setName("xSkewSlider"); // NOI18N
+        xSkewSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                xSkewSliderStateChanged(evt);
+            }
+        });
+
+        ySkewSlider.setMaximum(25);
+        ySkewSlider.setMinimum(-25);
+        ySkewSlider.setValue(0);
+        ySkewSlider.setName("ySkewSlider"); // NOI18N
+        ySkewSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ySkewSliderStateChanged(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -439,25 +461,22 @@ public class OcrView extends FrameView {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(resetTransformationButton))
                     .add(mainPanelLayout.createSequentialGroup()
-                        .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel13, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .add(jLabel10, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel13, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel10, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .add(jLabel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                 .add(jLabel4)
                                 .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                                 .add(jLabel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .add(jLabel9, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .add(jLabel11, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .add(jLabel12, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel9, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel11, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel12, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .add(jLabel14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(backgroundSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 288, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(backgroundSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                             .add(polaritySlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                            .add(mainPanelLayout.createSequentialGroup()
-                                .add(xScaleSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 141, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(yScaleSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 141, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(rotationSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                             .add(mainPanelLayout.createSequentialGroup()
                                 .add(xTranslationSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 141, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -465,7 +484,15 @@ public class OcrView extends FrameView {
                                 .add(yTranslationSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 141, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(saltSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, gaussianSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, scratchingSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, scratchingSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                            .add(mainPanelLayout.createSequentialGroup()
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(xSkewSlider, 0, 0, Short.MAX_VALUE)
+                                    .add(xScaleSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(ySkewSlider, 0, 0, Short.MAX_VALUE)
+                                    .add(yScaleSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))))))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -519,6 +546,11 @@ public class OcrView extends FrameView {
                                     .add(yScaleSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                    .add(jLabel14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(ySkewSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(xSkewSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                     .add(jLabel9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(saltSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -537,17 +569,15 @@ public class OcrView extends FrameView {
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                     .add(jLabel13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(backgroundSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 24, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 43, Short.MAX_VALUE)
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(resetTransformationButton)
                             .add(resampleButton)))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, mainPanelLayout.createSequentialGroup()
                         .add(13, 13, 13)
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
-                            .add(mainPanelLayout.createSequentialGroup()
-                                .add(jLabel4)
-                                .add(369, 369, 369))))
+                            .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                            .add(jLabel4)))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -572,7 +602,7 @@ public class OcrView extends FrameView {
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                     .add(predBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(predLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                            .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))))
+                            .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -621,28 +651,32 @@ public class OcrView extends FrameView {
 
         drawResultPanel();
     }
-
+    private long totalTime = 0;
+    private long totalCounts = 0;
     /**
      * Draw the content of the result panel.
      */
     private void drawResultPanel() {
+        long start = Calendar.getInstance().getTimeInMillis();
         Graphics2D g = resultImage.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, resultImage.getWidth(), resultImage.getHeight());
         g.translate(xTranslation / 100.0 * resultImage.getWidth(),
                 yTranslation / 100.0 * resultImage.getHeight());
         g.rotate(rotation * Math.PI / 180.0, resultImage.getWidth() / 2,
                 resultImage.getHeight() / 2);
+        g.transform(new AffineTransform(1, Math.tan(Math.PI * ySkew/100.),
+                Math.tan(Math.PI * xSkew/100.), 1, 0, 0));
         g.drawImage(inputImage, 0, 0, (int) ((1.0 + xScale / 100.0) * resultImage.getWidth()),
                 (int) ((1.0 + yScale / 100.0) * resultImage.getHeight()), null);
 
         // Apply non-linear transformations.
         for (int j = 0; j < resultImage.getHeight(); j++) {
             for (int i = 0; i < resultImage.getWidth(); i++) {
-                int pixelFg = (resultImage.getRGB(i, j) >> 16) & 0xff;
-                int pixelBg = (backgroundImage.getRGB(i, j) >> 16) & 0xff;
+                int pixelFg = resultImage.getRGB(i, j) & 0xff;
+                int pixelBg = backgroundImage.getRGB(i, j) & 0xff;
                 int pixel = Math.max(pixelFg, pixelBg);
 
                 if (rng.nextFloat() < salt / 500.0f) {
@@ -650,20 +684,22 @@ public class OcrView extends FrameView {
                 }
 
                 if (gaussian != 0) {
-                    pixel += rng.nextGaussian() * gaussian * 55. / 100.;
+                    pixel += (int) (rng.nextGaussian() * gaussian * 55. / 100.);
                 }
 
                 pixel = Math.min(Math.max(pixel, 0), 255);
 
-                pixel = (int) (127.5 + (pixel - 127.5) * polarity / 100.);
+                pixel = (int) (127.5 + ((pixel - 127.5) * polarity / 100.));
 
-                Color c = new Color(pixel, pixel, pixel);
-                resultImage.setRGB(i, j, c.getRGB());
+                resultImage.setRGB(i, j, (pixel << 16) | (pixel << 8) | (pixel));
             }
         }
 
         resultPanel.repaint();
         isPredictionDirty = true;
+        totalTime += Calendar.getInstance().getTimeInMillis() - start;
+        totalCounts += 1;
+//        jLabel1.setText((int)(totalTime / (double) totalCounts) + "ms");
     }
 
     /**
@@ -700,7 +736,7 @@ public class OcrView extends FrameView {
             g.setColor(new Color(c, c, c));
             GeneralPath scratch = new GeneralPath();
             scratch.moveTo(x, y);
-            scratch.lineTo((int) (x + l * Math.cos(t)), (int) (y + l * Math.cos(t)));
+            scratch.lineTo((int) (x + l * Math.cos(t)), (int) (y + l * Math.sin(t)));
             g.draw(scratch);
         }
     }
@@ -802,6 +838,8 @@ public class OcrView extends FrameView {
         polaritySlider.setValue(100);
         scratchingSlider.setValue(0);
         backgroundSlider.setValue(0);
+        xSkewSlider.setValue(0);
+        ySkewSlider.setValue(0);
     }//GEN-LAST:event_resetTransformationButtonMouseClicked
 
     /**
@@ -886,6 +924,26 @@ public class OcrView extends FrameView {
     }//GEN-LAST:event_backgroundSliderStateChanged
 
     /**
+     * Handle changes on x skew slider to adjust the skew of the image.
+     * @param evt
+     */
+    private void xSkewSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSkewSliderStateChanged
+        JSlider source = (JSlider) evt.getSource();
+        xSkew = source.getValue();
+        drawResultPanel();
+    }//GEN-LAST:event_xSkewSliderStateChanged
+
+     /**
+     * Handle changes on y skew slider to adjust the skew of the image.
+     * @param evt
+     */
+    private void ySkewSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySkewSliderStateChanged
+        JSlider source = (JSlider) evt.getSource();
+        ySkew = source.getValue();
+        drawResultPanel();
+    }//GEN-LAST:event_ySkewSliderStateChanged
+
+    /**
      * Pairs of possibly different element types.
      * @param <T>
      * @param <S>
@@ -921,6 +979,7 @@ public class OcrView extends FrameView {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -949,8 +1008,10 @@ public class OcrView extends FrameView {
     private javax.swing.JSlider scratchingSlider;
     private javax.swing.JSlider thicknessSlider;
     private javax.swing.JSlider xScaleSlider;
+    private javax.swing.JSlider xSkewSlider;
     private javax.swing.JSlider xTranslationSlider;
     private javax.swing.JSlider yScaleSlider;
+    private javax.swing.JSlider ySkewSlider;
     private javax.swing.JSlider yTranslationSlider;
     // End of variables declaration//GEN-END:variables
     private Random rng;
@@ -966,6 +1027,8 @@ public class OcrView extends FrameView {
     private int rotation = 0;
     private int xScale = 0;
     private int yScale = 0;
+    private int xSkew = 0;
+    private int ySkew = 0;
     private int salt = 0;
     private int gaussian = 0;
     private int polarity = 100;

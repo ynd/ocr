@@ -5,6 +5,7 @@
 package ocr.nnet;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -116,6 +117,8 @@ public class OcrNetwork implements Serializable {
         double yScale = (1 + (rng.nextInt(20) - 10) / 100.) * output.getHeight();
 
         Graphics2D g = (Graphics2D) output.getGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g.translate(xTranslation, yTranslation);
         g.rotate(rotation, output.getWidth() / 2, output.getHeight() / 2);
         g.drawImage(input, 0, 0, (int) xScale, (int) yScale, null);
