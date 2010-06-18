@@ -23,6 +23,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JSlider;
 import ocr.nnet.OcrNetwork;
+import ocr.nnet.factories.MLPFactory;
 import ocr.nnet.factories.SDAFactory;
 import org.jdesktop.application.ResourceMap;
 
@@ -41,7 +42,8 @@ public class OcrView extends FrameView {
         backgroundImage = new BufferedImage(32, 32, BufferedImage.TYPE_BYTE_GRAY);
         paths = new LinkedList<Pair<GeneralPath, Integer>>();
 
-        network = SDAFactory.load();
+        deepNetwork = SDAFactory.load();
+        shallowNetwork = MLPFactory.load();
         predictionTimer = new java.util.Timer();
         predictionTimer.scheduleAtFixedRate(new TimerTask() {
 
@@ -52,10 +54,31 @@ public class OcrView extends FrameView {
                 }
                 isPredictionDirty = false;
 
-                double[] outputs = network.getOutputRobust(resultImage);
+                double[] deepOutputs = deepNetwork.getOutputRobust(resultImage);
+                int[] deepMaximums = get3MaxOutputs(deepOutputs);
+                predDeepLabel0.setText(OcrNetwork.indexToLabel(deepMaximums[0]));
+                predDeepBar0.setValue((int) (deepOutputs[deepMaximums[0]] * 100));
+                predDeepLabel1.setText(OcrNetwork.indexToLabel(deepMaximums[1]));
+                predDeepBar1.setValue((int) (deepOutputs[deepMaximums[1]] * 100));
+                predDeepLabel2.setText(OcrNetwork.indexToLabel(deepMaximums[2]));
+                predDeepBar2.setValue((int) (deepOutputs[deepMaximums[2]] * 100));
 
-                // Display the 3 most probable categories.
+                double[] shallowOutputs = shallowNetwork.getOutputRobust(resultImage);
+                int[] shallowMaximums = get3MaxOutputs(shallowOutputs);
+                predShallowLabel0.setText(OcrNetwork.indexToLabel(shallowMaximums[0]));
+                predShallowBar0.setValue((int) (shallowOutputs[shallowMaximums[0]] * 100));
+                predShallowLabel1.setText(OcrNetwork.indexToLabel(shallowMaximums[1]));
+                predShallowBar1.setValue((int) (shallowOutputs[shallowMaximums[1]] * 100));
+                predShallowLabel2.setText(OcrNetwork.indexToLabel(shallowMaximums[2]));
+                predShallowBar2.setValue((int) (shallowOutputs[shallowMaximums[2]] * 100));
+            }
+
+            /**
+             * Return the index of the 3 most active outputs.
+             */
+            private int[] get3MaxOutputs(double[] outputs) {
                 int[] maximums = new int[3];
+
                 maximums[0] = maximums[1] = maximums[2] = -1;
 
                 for (int i = 0; i < outputs.length; i++) {
@@ -71,12 +94,7 @@ public class OcrView extends FrameView {
                     }
                 }
 
-                predLabel0.setText(OcrNetwork.indexToLabel(maximums[0]));
-                predBar0.setValue((int) (outputs[maximums[0]] * 100));
-                predLabel1.setText(OcrNetwork.indexToLabel(maximums[1]));
-                predBar1.setValue((int) (outputs[maximums[1]] * 100));
-                predLabel2.setText(OcrNetwork.indexToLabel(maximums[2]));
-                predBar2.setValue((int) (outputs[maximums[2]] * 100));
+                return maximums;
             }
         }, 0, 100);
     }
@@ -110,12 +128,12 @@ public class OcrView extends FrameView {
         resetButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         thicknessSlider = new javax.swing.JSlider();
-        predLabel0 = new javax.swing.JLabel();
-        predLabel1 = new javax.swing.JLabel();
-        predLabel2 = new javax.swing.JLabel();
-        predBar0 = new javax.swing.JProgressBar();
-        predBar1 = new javax.swing.JProgressBar();
-        predBar2 = new javax.swing.JProgressBar();
+        predDeepLabel0 = new javax.swing.JLabel();
+        predDeepLabel1 = new javax.swing.JLabel();
+        predDeepLabel2 = new javax.swing.JLabel();
+        predDeepBar0 = new javax.swing.JProgressBar();
+        predDeepBar1 = new javax.swing.JProgressBar();
+        predDeepBar2 = new javax.swing.JProgressBar();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
@@ -149,6 +167,13 @@ public class OcrView extends FrameView {
         jLabel14 = new javax.swing.JLabel();
         xSkewSlider = new javax.swing.JSlider();
         ySkewSlider = new javax.swing.JSlider();
+        predShallowLabel2 = new javax.swing.JLabel();
+        predShallowLabel0 = new javax.swing.JLabel();
+        predShallowLabel1 = new javax.swing.JLabel();
+        predShallowBar0 = new javax.swing.JProgressBar();
+        predShallowBar1 = new javax.swing.JProgressBar();
+        predShallowBar2 = new javax.swing.JProgressBar();
+        jLabel15 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -215,34 +240,34 @@ public class OcrView extends FrameView {
             }
         });
 
-        predLabel0.setFont(resourceMap.getFont("predLabel0.font")); // NOI18N
-        predLabel0.setForeground(resourceMap.getColor("predLabel0.foreground")); // NOI18N
-        predLabel0.setText(resourceMap.getString("predLabel0.text")); // NOI18N
-        predLabel0.setMaximumSize(new java.awt.Dimension(14, 17));
-        predLabel0.setMinimumSize(new java.awt.Dimension(14, 17));
-        predLabel0.setName("predLabel0"); // NOI18N
-        predLabel0.setPreferredSize(new java.awt.Dimension(14, 17));
+        predDeepLabel0.setFont(resourceMap.getFont("predDeepLabel0.font")); // NOI18N
+        predDeepLabel0.setForeground(resourceMap.getColor("predDeepLabel0.foreground")); // NOI18N
+        predDeepLabel0.setText(resourceMap.getString("predDeepLabel0.text")); // NOI18N
+        predDeepLabel0.setMaximumSize(new java.awt.Dimension(14, 17));
+        predDeepLabel0.setMinimumSize(new java.awt.Dimension(14, 17));
+        predDeepLabel0.setName("predDeepLabel0"); // NOI18N
+        predDeepLabel0.setPreferredSize(new java.awt.Dimension(14, 17));
 
-        predLabel1.setText(resourceMap.getString("predLabel1.text")); // NOI18N
-        predLabel1.setMaximumSize(new java.awt.Dimension(14, 17));
-        predLabel1.setMinimumSize(new java.awt.Dimension(14, 17));
-        predLabel1.setName("predLabel1"); // NOI18N
-        predLabel1.setPreferredSize(new java.awt.Dimension(14, 17));
+        predDeepLabel1.setText(resourceMap.getString("predDeepLabel1.text")); // NOI18N
+        predDeepLabel1.setMaximumSize(new java.awt.Dimension(14, 17));
+        predDeepLabel1.setMinimumSize(new java.awt.Dimension(14, 17));
+        predDeepLabel1.setName("predDeepLabel1"); // NOI18N
+        predDeepLabel1.setPreferredSize(new java.awt.Dimension(14, 17));
 
-        predLabel2.setText(resourceMap.getString("predLabel2.text")); // NOI18N
-        predLabel2.setMaximumSize(new java.awt.Dimension(14, 17));
-        predLabel2.setMinimumSize(new java.awt.Dimension(14, 17));
-        predLabel2.setName("predLabel2"); // NOI18N
-        predLabel2.setPreferredSize(new java.awt.Dimension(14, 17));
+        predDeepLabel2.setText(resourceMap.getString("predDeepLabel2.text")); // NOI18N
+        predDeepLabel2.setMaximumSize(new java.awt.Dimension(14, 17));
+        predDeepLabel2.setMinimumSize(new java.awt.Dimension(14, 17));
+        predDeepLabel2.setName("predDeepLabel2"); // NOI18N
+        predDeepLabel2.setPreferredSize(new java.awt.Dimension(14, 17));
 
-        predBar0.setName("predBar0"); // NOI18N
-        predBar0.setStringPainted(true);
+        predDeepBar0.setName("predDeepBar0"); // NOI18N
+        predDeepBar0.setStringPainted(true);
 
-        predBar1.setName("predBar1"); // NOI18N
-        predBar1.setStringPainted(true);
+        predDeepBar1.setName("predDeepBar1"); // NOI18N
+        predDeepBar1.setStringPainted(true);
 
-        predBar2.setName("predBar2"); // NOI18N
-        predBar2.setStringPainted(true);
+        predDeepBar2.setName("predDeepBar2"); // NOI18N
+        predDeepBar2.setStringPainted(true);
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
@@ -438,6 +463,38 @@ public class OcrView extends FrameView {
             }
         });
 
+        predShallowLabel2.setText(resourceMap.getString("predShallowLabel2.text")); // NOI18N
+        predShallowLabel2.setMaximumSize(new java.awt.Dimension(14, 17));
+        predShallowLabel2.setMinimumSize(new java.awt.Dimension(14, 17));
+        predShallowLabel2.setName("predShallowLabel2"); // NOI18N
+        predShallowLabel2.setPreferredSize(new java.awt.Dimension(14, 17));
+
+        predShallowLabel0.setFont(resourceMap.getFont("predShallowLabel0.font")); // NOI18N
+        predShallowLabel0.setForeground(resourceMap.getColor("predShallowLabel0.foreground")); // NOI18N
+        predShallowLabel0.setText(resourceMap.getString("predShallowLabel0.text")); // NOI18N
+        predShallowLabel0.setMaximumSize(new java.awt.Dimension(14, 17));
+        predShallowLabel0.setMinimumSize(new java.awt.Dimension(14, 17));
+        predShallowLabel0.setName("predShallowLabel0"); // NOI18N
+        predShallowLabel0.setPreferredSize(new java.awt.Dimension(14, 17));
+
+        predShallowLabel1.setText(resourceMap.getString("predShallowLabel1.text")); // NOI18N
+        predShallowLabel1.setMaximumSize(new java.awt.Dimension(14, 17));
+        predShallowLabel1.setMinimumSize(new java.awt.Dimension(14, 17));
+        predShallowLabel1.setName("predShallowLabel1"); // NOI18N
+        predShallowLabel1.setPreferredSize(new java.awt.Dimension(14, 17));
+
+        predShallowBar0.setName("predShallowBar0"); // NOI18N
+        predShallowBar0.setStringPainted(true);
+
+        predShallowBar1.setName("predShallowBar1"); // NOI18N
+        predShallowBar1.setStringPainted(true);
+
+        predShallowBar2.setName("predShallowBar2"); // NOI18N
+        predShallowBar2.setStringPainted(true);
+
+        jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
+        jLabel15.setName("jLabel15"); // NOI18N
+
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -501,16 +558,27 @@ public class OcrView extends FrameView {
                     .add(resultPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(mainPanelLayout.createSequentialGroup()
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(predLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(predLabel0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(predLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(predDeepLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predDeepLabel0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predDeepLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(18, 18, 18)
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(predBar0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(predBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(predBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(jLabel3))
-                .add(294, 294, 294))
+                            .add(predDeepBar0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predDeepBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predDeepBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(jLabel3)
+                    .add(mainPanelLayout.createSequentialGroup()
+                        .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(predShallowLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predShallowLabel0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predShallowLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(18, 18, 18)
+                        .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(predShallowBar0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predShallowBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(predShallowBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(jLabel15))
+                .add(24, 24, 24))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -590,18 +658,35 @@ public class OcrView extends FrameView {
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(mainPanelLayout.createSequentialGroup()
                                         .add(17, 17, 17)
-                                        .add(predBar0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                        .add(predDeepBar0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                     .add(mainPanelLayout.createSequentialGroup()
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(predLabel0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                        .add(predDeepLabel0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .add(11, 11, 11)
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                    .add(predBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(predLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(predDeepBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(predDeepLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                 .add(18, 18, 18)
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                    .add(predBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(predLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                    .add(predDeepBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(predDeepLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(18, 18, 18)
+                                .add(jLabel15)
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(mainPanelLayout.createSequentialGroup()
+                                        .add(17, 17, 17)
+                                        .add(predShallowBar0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(mainPanelLayout.createSequentialGroup()
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(predShallowLabel0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(11, 11, 11)
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                    .add(predShallowBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(predShallowLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(18, 18, 18)
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                                    .add(predShallowBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(predShallowLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                             .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -980,6 +1065,7 @@ public class OcrView extends FrameView {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -993,12 +1079,18 @@ public class OcrView extends FrameView {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JSlider polaritySlider;
-    private javax.swing.JProgressBar predBar0;
-    private javax.swing.JProgressBar predBar1;
-    private javax.swing.JProgressBar predBar2;
-    private javax.swing.JLabel predLabel0;
-    private javax.swing.JLabel predLabel1;
-    private javax.swing.JLabel predLabel2;
+    private javax.swing.JProgressBar predDeepBar0;
+    private javax.swing.JProgressBar predDeepBar1;
+    private javax.swing.JProgressBar predDeepBar2;
+    private javax.swing.JLabel predDeepLabel0;
+    private javax.swing.JLabel predDeepLabel1;
+    private javax.swing.JLabel predDeepLabel2;
+    private javax.swing.JProgressBar predShallowBar0;
+    private javax.swing.JProgressBar predShallowBar1;
+    private javax.swing.JProgressBar predShallowBar2;
+    private javax.swing.JLabel predShallowLabel0;
+    private javax.swing.JLabel predShallowLabel1;
+    private javax.swing.JLabel predShallowLabel2;
     private javax.swing.JButton resampleButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton resetTransformationButton;
@@ -1015,7 +1107,8 @@ public class OcrView extends FrameView {
     private javax.swing.JSlider yTranslationSlider;
     // End of variables declaration//GEN-END:variables
     private Random rng;
-    private OcrNetwork network;
+    private OcrNetwork deepNetwork;
+    private OcrNetwork shallowNetwork;
     private final java.util.Timer predictionTimer;
     private Image inputImage;
     private BufferedImage resultImage;

@@ -94,20 +94,34 @@
                       <Component id="resultPanel" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="predLabel2" min="-2" max="-2" attributes="0"/>
-                              <Component id="predLabel0" min="-2" pref="26" max="-2" attributes="0"/>
-                              <Component id="predLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="predDeepLabel2" min="-2" max="-2" attributes="0"/>
+                              <Component id="predDeepLabel0" min="-2" pref="26" max="-2" attributes="0"/>
+                              <Component id="predDeepLabel1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="predBar0" min="-2" max="-2" attributes="0"/>
-                              <Component id="predBar1" min="-2" max="-2" attributes="0"/>
-                              <Component id="predBar2" min="-2" max="-2" attributes="0"/>
+                              <Component id="predDeepBar0" min="-2" max="-2" attributes="0"/>
+                              <Component id="predDeepBar1" min="-2" max="-2" attributes="0"/>
+                              <Component id="predDeepBar2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="predShallowLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="predShallowLabel0" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
+                              <Component id="predShallowLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="predShallowBar0" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="predShallowBar1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="predShallowBar2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="294" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -206,22 +220,44 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                          <Component id="predBar0" min="-2" pref="31" max="-2" attributes="0"/>
+                                          <Component id="predDeepBar0" min="-2" pref="31" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="predLabel0" min="-2" pref="52" max="-2" attributes="0"/>
+                                          <Component id="predDeepLabel0" min="-2" pref="52" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="predBar1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="predLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="predDeepBar1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="predDeepLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="predBar2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="predLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="predDeepBar2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="predDeepLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                                          <Component id="predShallowBar0" min="-2" pref="31" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="predShallowLabel0" min="-2" pref="52" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="predShallowBar1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="predShallowLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="predShallowBar2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="predShallowLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jSeparator2" alignment="0" pref="498" max="32767" attributes="1"/>
@@ -304,68 +340,68 @@
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="thicknessSliderStateChanged"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="predLabel0">
+        <Component class="javax.swing.JLabel" name="predDeepLabel0">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="predLabel0.font"/>
-            <Property name="foreground" type="java.awt.Color" resourceKey="predLabel0.foreground"/>
-            <Property name="text" type="java.lang.String" resourceKey="predLabel0.text"/>
+            <Property name="font" type="java.awt.Font" resourceKey="predDeepLabel0.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="predDeepLabel0.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="predDeepLabel0.text"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
-            <Property name="name" type="java.lang.String" value="predLabel0" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="predDeepLabel0" noResource="true"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="predLabel1">
+        <Component class="javax.swing.JLabel" name="predDeepLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="predLabel1.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="predDeepLabel1.text"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
-            <Property name="name" type="java.lang.String" value="predLabel1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="predDeepLabel1" noResource="true"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="predLabel2">
+        <Component class="javax.swing.JLabel" name="predDeepLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="predLabel2.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="predDeepLabel2.text"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
-            <Property name="name" type="java.lang.String" value="predLabel2" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="predDeepLabel2" noResource="true"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[14, 17]"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JProgressBar" name="predBar0">
+        <Component class="javax.swing.JProgressBar" name="predDeepBar0">
           <Properties>
-            <Property name="name" type="java.lang.String" value="predBar0" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="predDeepBar0" noResource="true"/>
             <Property name="stringPainted" type="boolean" value="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JProgressBar" name="predBar1">
+        <Component class="javax.swing.JProgressBar" name="predDeepBar1">
           <Properties>
-            <Property name="name" type="java.lang.String" value="predBar1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="predDeepBar1" noResource="true"/>
             <Property name="stringPainted" type="boolean" value="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JProgressBar" name="predBar2">
+        <Component class="javax.swing.JProgressBar" name="predDeepBar2">
           <Properties>
-            <Property name="name" type="java.lang.String" value="predBar2" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="predDeepBar2" noResource="true"/>
             <Property name="stringPainted" type="boolean" value="true"/>
           </Properties>
         </Component>
@@ -646,6 +682,77 @@
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="ySkewSliderStateChanged"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="predShallowLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="predShallowLabel2.text"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+            <Property name="name" type="java.lang.String" value="predShallowLabel2" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="predShallowLabel0">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="predShallowLabel0.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="predShallowLabel0.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="predShallowLabel0.text"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+            <Property name="name" type="java.lang.String" value="predShallowLabel0" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="predShallowLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="predShallowLabel1.text"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+            <Property name="name" type="java.lang.String" value="predShallowLabel1" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[14, 17]"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JProgressBar" name="predShallowBar0">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="predShallowBar0" noResource="true"/>
+            <Property name="stringPainted" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JProgressBar" name="predShallowBar1">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="predShallowBar1" noResource="true"/>
+            <Property name="stringPainted" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JProgressBar" name="predShallowBar2">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="predShallowBar2" noResource="true"/>
+            <Property name="stringPainted" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel15">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="jLabel15.text"/>
+            <Property name="name" type="java.lang.String" value="jLabel15" noResource="true"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
