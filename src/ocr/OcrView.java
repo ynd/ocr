@@ -42,9 +42,7 @@ public class OcrView extends FrameView {
         backgroundImage = new BufferedImage(32, 32, BufferedImage.TYPE_BYTE_GRAY);
         paths = new LinkedList<Pair<GeneralPath, Integer>>();
 
-        deepNetwork = SDAFactory.create();
-        SDAFactory.loadParameters(deepNetwork);
-        SDAFactory.save(deepNetwork);
+        deepNetwork = SDAFactory.load();
         shallowNetwork = MLPFactory.load();
         predictionTimer = new java.util.Timer();
         predictionTimer.scheduleAtFixedRate(new TimerTask() {
