@@ -43,7 +43,9 @@ public class OcrView extends FrameView {
         paths = new LinkedList<Pair<GeneralPath, Integer>>();
 
         deepNetwork = SDAFactory.load();
-        shallowNetwork = MLPFactory.load();
+        shallowNetwork = MLPFactory.create();
+        MLPFactory.loadParameters(shallowNetwork);
+        MLPFactory.save(shallowNetwork);
         predictionTimer = new java.util.Timer();
         predictionTimer.scheduleAtFixedRate(new TimerTask() {
 
@@ -144,7 +146,7 @@ public class OcrView extends FrameView {
         jLabel6 = new javax.swing.JLabel();
         resultPanel = new javax.swing.JPanel() {
             public void paint(Graphics g) {
-                g.drawImage(resultImage, 0, 0, 140, 140, null);
+                g.drawImage(resultImage, 0, 0, 160, 160, null);
             }
         };
         jLabel7 = new javax.swing.JLabel();
@@ -189,10 +191,10 @@ public class OcrView extends FrameView {
         mainPanel.setPreferredSize(new java.awt.Dimension(880, 390));
 
         inputPanel.setBackground(resourceMap.getColor("inputPanel.background")); // NOI18N
-        inputPanel.setMaximumSize(new java.awt.Dimension(140, 140));
-        inputPanel.setMinimumSize(new java.awt.Dimension(140, 140));
+        inputPanel.setMaximumSize(new java.awt.Dimension(160, 160));
+        inputPanel.setMinimumSize(new java.awt.Dimension(160, 160));
         inputPanel.setName("inputPanel"); // NOI18N
-        inputPanel.setPreferredSize(new java.awt.Dimension(140, 140));
+        inputPanel.setPreferredSize(new java.awt.Dimension(160, 160));
         inputPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 inputPanelMouseDragged(evt);
@@ -209,11 +211,11 @@ public class OcrView extends FrameView {
         inputPanel.setLayout(inputPanelLayout);
         inputPanelLayout.setHorizontalGroup(
             inputPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 134, Short.MAX_VALUE)
+            .add(0, 160, Short.MAX_VALUE)
         );
         inputPanelLayout.setVerticalGroup(
             inputPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 140, Short.MAX_VALUE)
+            .add(0, 160, Short.MAX_VALUE)
         );
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -310,17 +312,17 @@ public class OcrView extends FrameView {
 
         resultPanel.setBackground(resourceMap.getColor("resultPanel.background")); // NOI18N
         resultPanel.setName("resultPanel"); // NOI18N
-        resultPanel.setPreferredSize(new java.awt.Dimension(140, 140));
+        resultPanel.setPreferredSize(new java.awt.Dimension(160, 160));
 
         org.jdesktop.layout.GroupLayout resultPanelLayout = new org.jdesktop.layout.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
         resultPanelLayout.setHorizontalGroup(
             resultPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 140, Short.MAX_VALUE)
+            .add(0, 160, Short.MAX_VALUE)
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 140, Short.MAX_VALUE)
+            .add(0, 160, Short.MAX_VALUE)
         );
 
         jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
@@ -503,12 +505,12 @@ public class OcrView extends FrameView {
                 .addContainerGap()
                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel1)
-                    .add(inputPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 134, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(resetButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 134, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(inputPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(mainPanelLayout.createSequentialGroup()
                         .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(4, 4, 4)
-                        .add(thicknessSlider, 0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(thicknessSlider, 0, 0, Short.MAX_VALUE))
+                    .add(resetButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -578,7 +580,7 @@ public class OcrView extends FrameView {
                             .add(predShallowBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(predShallowBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(jLabel15))
-                .add(24, 24, 24))
+                .add(31, 31, 31))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -593,10 +595,10 @@ public class OcrView extends FrameView {
                                 .add(inputPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(resetButton)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(thicknessSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(18, 18, 18)
+                                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(jLabel2, 0, 0, Short.MAX_VALUE)
+                                    .add(thicknessSlider, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .add(mainPanelLayout.createSequentialGroup()
                                 .add(31, 31, 31)
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -637,14 +639,14 @@ public class OcrView extends FrameView {
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                     .add(jLabel13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(backgroundSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 43, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 60, Short.MAX_VALUE)
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(resetTransformationButton)
                             .add(resampleButton)))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, mainPanelLayout.createSequentialGroup()
                         .add(13, 13, 13)
                         .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                            .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
                             .add(jLabel4)))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
@@ -687,7 +689,7 @@ public class OcrView extends FrameView {
                                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                     .add(predShallowBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(predShallowLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                            .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))))
+                            .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
