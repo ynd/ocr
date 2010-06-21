@@ -11,11 +11,11 @@ import java.io.Serializable;
  * The Tanh activation function for neural network layers.
  * @author dauphiya
  */
-public class TanhActivation implements Activation, Serializable {
+public class CenteredTanhActivation implements Activation, Serializable {
 
     public void getOutput(double[] inputs) {
         for (int i = 0; i < inputs.length; i++) {
-            inputs[i] = Math.tanh(inputs[i]);
+            inputs[i] = (Math.tanh(inputs[i]) + 1.0) / 2.0;
         }
     }
 

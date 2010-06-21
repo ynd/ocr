@@ -13,7 +13,7 @@ import ocr.OcrApp;
 import ocr.nnet.NeuralNetworkLayer;
 import ocr.nnet.OcrNetwork;
 import ocr.nnet.SigmoidActivation;
-import ocr.nnet.TanhActivation;
+import ocr.nnet.CenteredTanhActivation;
 
 /**
  * Factory in charge of creating, loading and saving a deep network trained
@@ -28,9 +28,9 @@ public class SDAFactory {
      */
     public static OcrNetwork create() {
         OcrNetwork network = new OcrNetwork(new NeuralNetworkLayer[]{
-                    new NeuralNetworkLayer(32 * 32, 1000, new TanhActivation()),
-                    new NeuralNetworkLayer(1000, 1000, new TanhActivation()),
-                    new NeuralNetworkLayer(1000, 1000, new TanhActivation()),
+                    new NeuralNetworkLayer(32 * 32, 1000, new CenteredTanhActivation()),
+                    new NeuralNetworkLayer(1000, 1000, new CenteredTanhActivation()),
+                    new NeuralNetworkLayer(1000, 1000, new CenteredTanhActivation()),
                     new NeuralNetworkLayer(1000, 62, new SigmoidActivation())
                 });
 
